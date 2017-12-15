@@ -15,6 +15,7 @@ Purposes: Using Dijkstra's algorithm to solve the shortest path problem
 #lang racket/base
 
 (require racket/list)
+(require racket/vector)
 (require racket/bool)
 (require "graph-for-test.rkt")
 
@@ -34,12 +35,12 @@ Purposes: Using Dijkstra's algorithm to solve the shortest path problem
   (cond [(not (and (member source node-list) (member target node-list))) #false]
         [else
          (let (; distance from source to source is 0 and from source to v is unknown
-               [dist (map (lambda (x) (if (symbol=? x source) 0 +inf.0)) node-list)]
+               [dist (for/vector ([i node-list]) (if (symbol=? i source) 0 +inf.0))]
                ; previous node in optimal path from source and from source to source is source itself
-               [prev (map (lambda (x) (if (symbol=? x source) source 'UNDEFINED)) node-list)]
-               ; q-bool is a [List-of Boolean] that shows which nodes have not been processed
+               [prev (for/vector ([i node-list]) (if (symbol=? i source) source 'UNDEFINED))]
+               ; q-bool is a [Vector-of Boolean] that shows which nodes have not been processed
                ; #true means that the corresponding node has not been processed and vice versa
-               [q-bool (make-list (length node-list) #true)]
+               [q-bool (make-vector (length node-list) #true)]
                ; u is the node node currently processed
                [u source])
 
@@ -50,28 +51,28 @@ Purposes: Using Dijkstra's algorithm to solve the shortest path problem
            
              ; node with the least distance will be processed first
              (let* ([min-dist (argmin values (for/list ([i dist] [j q-bool] #:when j) i))]
-                    [min-index (index-of dist min-dist)])
+                    [min-index (vector-member min-dist dist)])
                (set! u (list-ref node-list min-index)))
            
              ; marks the node u as processed
-             (set! q-bool (list-set q-bool (node-index u) #false))
+             (vector-set! q-bool (node-index u) #false)
            
              ; relaxes edges for each neighbor v of u
              (for ([i graph])             
                (let* ([v (caddr i)]
                       [cost (cadr i)]
-                      [alt (+ (list-ref dist (node-index u)) cost)])
+                      [alt (+ (vector-ref dist (node-index u)) cost)])
                  ; a shorter path to v has been found
                  (when (and (symbol=? u (car i))
-                            (list-ref q-bool (node-index v))
-                            (> (list-ref dist (node-index v)) alt))
+                            (vector-ref q-bool (node-index v))
+                            (> (vector-ref dist (node-index v)) alt))
                    ; updates the data of dist and prev
-                   (set! dist (list-set dist (node-index v) alt))
-                   (set! prev (list-set prev (node-index v) u))))))
+                   (vector-set! dist (node-index v) alt)
+                   (vector-set! prev (node-index v) u)))))
          
            ; reads the shortest path from source to target           
            (let* ([u target]
-                  [prev-u (list-ref prev (node-index u))])
+                  [prev-u (vector-ref prev (node-index u))])
              ; returns false if there is no valid previous node found
              (cond [(symbol=? prev-u 'UNDEFINED) #false] 
                    [else
@@ -83,4 +84,4 @@ Purposes: Using Dijkstra's algorithm to solve the shortest path problem
                       ; pushes the vertex onto the stack and traverse from target to source
                       (begin0 (cons u tail)
                               (set! u prev-u)
-                              (set! prev-u (list-ref prev (node-index u)))))])))]))
+                              (set! prev-u (vector-ref prev (node-index u)))))])))]))

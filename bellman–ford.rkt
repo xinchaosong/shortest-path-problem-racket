@@ -15,6 +15,7 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
 #lang racket/base
 
 (require racket/list)
+(require racket/vector)
 (require racket/bool)
 (require test-engine/racket-tests)
 (require "graph-for-test.rkt")
@@ -36,9 +37,9 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
         [else
          (let (; Step 1: initializes the graph
                ; distance from source to source is 0 and from source to v is unknown
-               [dist (map (lambda (x) (if (symbol=? x source) 0 +inf.0)) node-list)]
+               [dist (for/vector ([i node-list]) (if (symbol=? i source) 0 +inf.0))]
                ; previous node in optimal path from source and from source to source is source itself
-               [prev (map (lambda (x) (if (symbol=? x source) source 'UNDEFINED)) node-list)])
+               [prev (for/vector ([i node-list]) (if (symbol=? i source) source 'UNDEFINED))])
 
            ; Step 2: relaxes edges repeatedly
            (for ([n (in-range (- (length node-list) 1))])
@@ -46,12 +47,12 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
                (let* ([u (car i)]
                       [v (caddr i)]
                       [cost (cadr i)]
-                      [alt (+ (list-ref dist (node-index u)) cost)])
+                      [alt (+ (vector-ref dist (node-index u)) cost)])
                  ; a shorter path to v has been found
-                 (when (> (list-ref dist (node-index v)) alt)
+                 (when (> (vector-ref dist (node-index v)) alt)
                    ; updates the data of dist and prev
-                   (set! dist (list-set dist (node-index v) alt))
-                   (set! prev (list-set prev (node-index v) u))))))
+                   (vector-set! dist (node-index v) alt)
+                   (vector-set! prev (node-index v) u)))))
 
            ; Step 3: checks for negative-weight cycles
            (for ([n (in-range (- (length node-list) 1))])
@@ -59,14 +60,14 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
                (let* ([u (car i)]
                       [v (caddr i)]
                       [cost (cadr i)]
-                      [alt (+ (list-ref dist (node-index u)) cost)])
+                      [alt (+ (vector-ref dist (node-index u)) cost)])
                  ; raises the exception if a negative-weight cycle has been found 
-                 (when (> (list-ref dist (node-index v)) alt)
+                 (when (> (vector-ref dist (node-index v)) alt)
                    (error "Graph contains a negative-weight cycle")))))
            
            ; reads the shortest path from source to target
            (let* ([u target]
-                  [prev-u (list-ref prev (node-index u))])
+                  [prev-u (vector-ref prev (node-index u))])
              ; returns false if there is no valid previous node found
              (cond [(symbol=? prev-u 'UNDEFINED) #false] 
                    [else
@@ -78,4 +79,4 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
                       ; pushes the vertex onto the stack and traverse from target to source
                       (begin0 (cons u tail)
                               (set! u prev-u)
-                              (set! prev-u (list-ref prev (node-index u)))))])))]))
+                              (set! prev-u (vector-ref prev (node-index u)))))])))]))
