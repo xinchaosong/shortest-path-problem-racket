@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 #|
-Date: December 14, 2017
+Last Updated Date: December 18, 2017
 Name: Xinchao Song
 Email: contact@songxinchao.net
 Project Number: SE1403
@@ -17,8 +17,7 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
 (require racket/list)
 (require racket/vector)
 (require racket/bool)
-(require test-engine/racket-tests)
-(require "graph-for-test.rkt")
+(require "graph-example.rkt")
 
 ;; A [Maybe X] is one of: 
 ;; – #false
@@ -46,8 +45,8 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
              (for ([i graph]) 
                (let* ([u (car i)]
                       [v (caddr i)]
-                      [cost (cadr i)]
-                      [alt (+ (vector-ref dist (node-index u)) cost)])
+                      [weight (cadr i)]
+                      [alt (+ (vector-ref dist (node-index u)) weight)])
                  ; a shorter path to v has been found
                  (when (> (vector-ref dist (node-index v)) alt)
                    ; updates the data of dist and prev
@@ -59,8 +58,8 @@ Purposes: Using Bellman–Ford algorithm to solve the shortest path problem
              (for ([i graph]) 
                (let* ([u (car i)]
                       [v (caddr i)]
-                      [cost (cadr i)]
-                      [alt (+ (vector-ref dist (node-index u)) cost)])
+                      [weight (cadr i)]
+                      [alt (+ (vector-ref dist (node-index u)) weight)])
                  ; raises the exception if a negative-weight cycle has been found 
                  (when (> (vector-ref dist (node-index v)) alt)
                    (error "Graph contains a negative-weight cycle")))))
