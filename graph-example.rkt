@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 #|
-Date: December 14, 2017
+Last Updated Date: December 18, 2017
 Name: Xinchao Song
 Email: contact@songxinchao.net
 Project Number: SE1403
@@ -14,8 +14,8 @@ Purposes: provides two graph examples for testing
 
 #lang racket/base
 
-(provide graph-positive)
-(provide graph-negative)
+(provide graph-pos)
+(provide graph-neg)
 
 ;; Data Definitions
 
@@ -55,7 +55,7 @@ Purposes: provides two graph examples for testing
 (define edge18 (list 'C -200 'E))
 
 ;; Graphs
-(define graph-positive (list edge0 edge1 edge2 edge3 edge4 edge5 edge6 edge7 edge8 edge9
+(define graph-pos (list edge0 edge1 edge2 edge3 edge4 edge5 edge6 edge7 edge8 edge9
                              edge10 edge11 edge12 edge13 edge14 edge15 edge16 edge17))
-(define graph-negative (list edge0 edge1 edge2 edge3 edge4 edge5 edge6 edge7 edge8 edge9
+(define graph-neg (list edge0 edge1 edge2 edge3 edge4 edge5 edge6 edge7 edge8 edge9
                              edge10 edge11 edge12 edge13 edge14 edge15 edge16 edge18))
