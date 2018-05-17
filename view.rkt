@@ -50,6 +50,7 @@ Purposes: The GUI view of the demo program
 (define LINE-LIST (list LINE0 LINE1 LINE2 LINE3 LINE4 LINE5 LINE6 LINE7 LINE8 LINE9 LINE10 LINE11
                         LINE12 LINE13 LINE14 LINE15 LINE16 LINE17))
 
+;; The list containing the lines in the shortest path
 (define path-list '())
 
 ;; Makes a frame by instantiating the frame% class
@@ -59,19 +60,19 @@ Purposes: The GUI view of the demo program
                    [min-height HEIGHT]
                    [alignment '(center top)]))
 
-; Makes a horizontal panel in the frame for the canvas
+;; Makes a horizontal panel in the frame for the canvas
 (define canvas-panel
   (new horizontal-panel% [parent frame]
        [alignment '(center center)]
        [min-width 500]
        [min-height 428]))
 
-; Makes a horizontal panel in the frame for the text fields
+;; Makes a horizontal panel in the frame for the text fields
 (define text-field-panel
   (new horizontal-panel% [parent frame]
        [alignment '(center center)]))
 
-; Makes a horizontal panel in the frame for the buttons
+;; Makes a horizontal panel in the frame for the buttons
 (define button-panel
   (new horizontal-panel% [parent frame]
        [alignment '(center center)]))
