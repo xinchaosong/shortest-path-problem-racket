@@ -3,7 +3,7 @@
 #|
 Last Updated Date: December 18, 2017
 Name: Xinchao Song
-Email: contact@songxinchao.net
+Email: contact@songxinchao.com
 Project Number: SE1403
 Project Name: shortest-path-problem-racket
 File: dijkstra.rkt
@@ -17,7 +17,8 @@ Purposes: Using Dijkstra's algorithm to solve the shortest path problem
 (require racket/list)
 (require racket/vector)
 (require racket/bool)
-(require "graph-example.rkt")
+
+(provide dijkstra)
 
 ;; A [Maybe X] is one of: 
 ;; – #false
@@ -34,7 +35,7 @@ Purposes: Using Dijkstra's algorithm to solve the shortest path problem
     (index-of node-list node))
   
   (cond
-    ; if source or target is invaild, returns #false
+    ; if source or target is invalid, returns #false
     [(not (and (member source node-list) (member target node-list))) #false]
     ; otherwise solves the problem
     [else

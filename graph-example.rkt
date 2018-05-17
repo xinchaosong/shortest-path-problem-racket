@@ -3,7 +3,7 @@
 #|
 Last Updated Date: December 18, 2017
 Name: Xinchao Song
-Email: contact@songxinchao.net
+Email: contact@songxinchao.com
 Project Number: SE1403
 Project Name: shortest-path-problem-racket
 File: graph-for-test.rkt
